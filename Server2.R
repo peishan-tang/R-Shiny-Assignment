@@ -57,24 +57,31 @@ server = function(input, output){
   })
   
   output$output_table = renderTable({
-    factors()})
-  output$data_table = renderTable({
-    data()})
-  output$plot = renderPlot({
-    ggplot(factors(), aes(x = factors()$factor_table, y = Cumulative_Paid_Claims, 
-                                    group = Loss_Year, color = as.factor(Loss_Year),
-                                    label = format(Dev4, big.mark = ","))) +
-      geom_point(size = 3) +
-      geom_line() + 
-      labs(title = "Cumulative Paid Claims and Projections by Development Year",
-           x = "Development Year", y = "Cumulative Paid Claims") +
-      scale_color_manual(name = "Loss Year", values = c("orange", "blue", "maroon"))
-      scale_y_continuous(limits = c(500000, 1500000)) +
-      theme_bw()
+    factors_rounded = round(factors(), digits = 0)
+    factors_formatted = format(factors_rounded, scientific = FALSE)
+    return(factors_formatted)
   })
   
+  output$data_table = renderTable({
+    data()
+  })
+  
+  output$cumulative_plot = renderPlot({
+    cum_paid = tidyr::pivot_longer(factors(), cols = Dev1:Dev4, names_to = "Development_Year", values_to = "Cumulative_Paid_Claims")
+    cum_paid$Development_Year = as.numeric(gsub("Dev", "", cum_paid$Development_Year))
+    ggplot(cum_paid, aes(x = Development_Year, y = Cumulative_Paid_Claims, color = factor(Loss_Year))) + 
+      geom_line() + 
+      geom_point(size = 3) +
+      geom_text(aes(label = scales::comma_format()(Cumulative_Paid_Claims)), nudge_y = 50000) +
+      labs(title = "Cumulative Paid Claims and Projections by Development Year",
+           x = "Development Year", y = "Cumulative Paid Claims", color = "Loss Year") +
+      scale_color_manual(name = "Loss Year", values = c("2017" = "orange",  "2018" = "blue", "2019" = "maroon")) +
+      scale_y_continuous(limits = c(500000, 1500000)) +
+      theme_minimal() +
+      theme(plot.title = element_text(hjust = 0.5))
+  })
   
  } 
 
 shinyApp(ui, server)
-    
+

@@ -1,7 +1,7 @@
 library(shiny)
 
 ui = fluidPage(
-  titlePanel("Cumulative Paid Claims($)"),
+  titlePanel("Input"),
   sidebarLayout(
     sidebarPanel(
       fileInput("file", "Please Upload CSV File", accept = c(".csv")),
@@ -12,7 +12,7 @@ mainPanel(
   tabsetPanel(
     tabPanel("Input Data", tableOutput(outputId = "data_table")),
     tabPanel("Factor Table", tableOutput(outputId = "output_table")),
-    tabPanel("Plot", plotOutput(outputId = "plot"))
+    tabPanel("Cumulative Plot", plotOutput(outputId = "cumulative_plot"))
   ))))
 
 
