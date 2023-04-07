@@ -75,7 +75,7 @@ server = function(input, output){
       geom_text(aes(label = scales::comma_format()(Cumulative_Paid_Claims)), nudge_y = 50000) +
       labs(title = "Cumulative Paid Claims and Projections by Development Year",
            x = "Development Year", y = "Cumulative Paid Claims", color = "Loss Year") +
-      scale_color_manual(name = "Loss Year", values = c("2017" = "orange",  "2018" = "blue", "2019" = "maroon")) +
+      scale_color_manual(name = "Loss Year", values = c("2017" = "red",  "2018" = "blue", "2019" = "orange")) +
       scale_y_continuous(limits = c(500000, 1500000)) +
       theme_minimal() +
       theme(plot.title = element_text(hjust = 0.5))

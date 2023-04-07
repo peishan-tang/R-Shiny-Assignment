@@ -1,7 +1,7 @@
 library(shiny)
 
 ui = fluidPage(
-  titlePanel("Input"),
+  titlePanel("Input Data"),
   sidebarLayout(
     sidebarPanel(
       fileInput("file", "Please Upload CSV File", accept = c(".csv")),
